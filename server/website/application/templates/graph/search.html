@@ -1,0 +1,143 @@
+{% extends "base/side-right.html" %}
+
+{% block head %}
+    {{ super() }}
+
+    <link rel="stylesheet" href={{ url_for('static', filename='css/alchemy.min.css') }}>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/vendor.css') }}>
+
+    <style type="text/css">
+    .node-info{
+        min-width: 200px;
+        max-width: 500px;
+        min-height: 20px;
+        position: absolute;
+        top: 100px;
+        right: 15px;
+        background-color: #428BCA;
+        color: #FFFFFF;
+        border-radius: 10px;
+        font-family: "Microsoft YaHei UI";
+        padding: 10px;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+    <form action="/graph/search" method="post" class='form-inline' id='search_form' role='form'>
+        <div class='input-group'>
+            <input type='text' id='search_input' class='form-control' name='mention' placeholder="中央美术学院">
+                <span class='input-group-btn'>
+                    <button class='btn btn-default' id='search_button' type='submit'>搜索</button>
+                </span>
+        </div>
+        <span>比如 <a href="#" onclick="set_search('徐悲鸿')">徐悲鸿</a>, <a href="#" onclick="set_search('齐白石')">齐白石</a></span>
+    </form>
+
+    <hr>
+
+    <div class="alchemy" id="alchemy" style="height: 800px"></div>
+
+    <div class="node-info" id="node-info">节点属性提示(鼠标移动显示)</div>
+
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+    {{ super() }}
+
+    <script src="{{ url_for('static',filename='js/vendor.js') }}" charset="utf-8"></script>
+    <script src="{{ url_for('static',filename='js/alchemy.min.js') }}"></script>
+
+    <script type="text/javascript">
+
+    // Set search key
+    function set_search(key) {
+        jQuery("#search_input").val(key);
+        jQuery('html, body').animate({scrollTop:0}, 'fast');
+    }
+
+    // Configuration of Alchemy
+    var alchemy_conf = {
+        dataSource: {{ data_source|tojson }},
+        nodeCaption:function (node) {
+            return node.name
+        },
+        edgeCaption:function (edge) {
+            return edge.relationship
+        },
+        nodeStyle:{
+            "person": {"color"  : "#68B9FE"},
+            "organization": {"color"  : "#FF83FA"},
+            "creative_work": {"color"  : "#6B8E23"},
+            "location": {"color"  : "#FF6347"}
+
+        },
+        nodeTypes: {
+            "label": ["person", "organization", 'creative_work', 'location']
+        },
+        nodeMouseOver: function(node){
+            var properties = node._properties;
+            var res = "";
+            for(var key in properties){
+                if(key !== "identifier" && key !== "key" && key !== "labels"){
+                    var line = '<b>' + key + '</b>:&nbsp;&nbsp;' + properties[key] +  '<br>';
+                    res += line;
+                }
+            }
+            jQuery("#node-info").html(res);
+        },
+        nodeMouseOut: function(node){
+            jQuery("#node-info").html("节点属性提示");
+        },
+        forceLocked: false,
+        nodeCaptionsOnByDefault: true,
+        directedEdges:true,
+        initialScale: 0.8,
+        initialTranslate: [250,150],
+
+        showControlDash: true,
+        showStats: true,
+        nodeStats: true,
+
+        showFilters: true,
+        nodeFilters: true,
+
+        captionToggle: true,
+        edgesToggle: true,
+        nodesToggle: true,
+        toggleRootNotes: false,
+
+
+        zoomControls: true
+    }
+
+    // Load the configuration
+    alchemy.begin(alchemy_conf)
+
+    // Retrieve node with name
+    function search(){
+        var name = jQuery("#search_input").val();
+        if(name === ""){
+            alert("请输入要查询的实体！");
+            return;
+        }
+
+
+        jQuery.ajax({
+            url: "/graph/search?name="+name,
+            success: function (data) {
+
+                alert("搜索功能还在加紧开发中，查看数据请移步右上角‘数据’");
+            },
+            error: function (data) {
+
+            }
+        })
+    }
+
+</script>
+{% endblock %}

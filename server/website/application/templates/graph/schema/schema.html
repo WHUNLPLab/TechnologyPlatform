@@ -1,0 +1,41 @@
+{% extends 'base/side-right.html' %}
+
+{% block head %}
+    {{ super() }}
+
+    <!-- 引入Element -->
+    <link rel="stylesheet" href={{ url_for('static', filename='css/bootstrap-treeview.min.css') }}>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <h5>Class(分类列表)</h5>
+        </div>
+
+        <div class="row">
+            <div id="treeview1" class=""></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script src="{{ url_for('static',filename='js/bootstrap-treeview.min.js') }}"></script>
+
+    <script>
+        jQuery(function () {
+
+            jQuery('#treeview1').treeview({
+                data: {{ schema_data|tojson }},
+                enableLinks: true,
+                showTags: true
+            });
+        })
+    </script>
+
+{% endblock %}

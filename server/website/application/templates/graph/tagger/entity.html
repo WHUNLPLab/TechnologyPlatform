@@ -1,0 +1,328 @@
+{% extends "base/side-right.html" %}
+
+{% block head %}
+    {{ super() }}
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href={{ url_for('static', filename='css/sfq-style.css') }}>
+
+    <style type="text/css">
+        .row {
+            margin-top: 30px;
+        }
+        .text {
+            padding: 10px;
+            border-radius: 4px;
+            background-color:#FFFFFF;
+            font-family: "Microsoft YaHei UI";
+            font-size: 18px;
+            line-height: 40px;
+            width: 100%;
+            box-shadow: 0 0 1px #000;
+        }
+        .progress_info{
+            font-family: 'Microsoft YaHei UI';
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        .tag{
+            width: 80px;
+            height: 40px;
+            font-family: 'Microsoft YaHei UI';
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 10px;
+            color: #FFFFFF;
+            margin-right: 30px;
+            cursor: pointer;
+            float: left;
+            text-align: center;
+        }
+        .button_a{
+            color:#FFFFFF;
+        }
+        .tagged_text{
+            padding: 4px, 0px, 4px, 0px;
+            border-radius: 4px;
+            color: #FFFFFF
+        }
+        .tips{
+            margin-left: 20px;
+        }
+        .cleanfloat::after{
+            display: block; 
+            clear: both; 
+            content:""; 
+            visibility: hidden; 
+            height: 0;
+        }/*清浮动*/
+        ol li{
+            list-style: none;
+            float: left;
+            font-size: 25px;
+            margin-right: 5px;
+            color: #ccc;
+            cursor: pointer;
+        }
+        .hs, .cs{
+            color: #f00;
+        }
+        .mark_box{
+            display: flex;
+            float: left;
+            align-items: center;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <h1 style="display: inline">实体标注</h1>
+        </div>
+
+        <div class="row">
+            <progress value="7" max="10"></progress><span class="progress_info">7/10</span>
+            <span class="tips"><b>使用说明：</b>鼠标选中文字区域，点击实体类型按钮进行标记。如若取消标记，请选中文字标记为“其他”。更多信息请参考<a href="/graph/document">使用说明</a>。</span>
+            <div style="float:right">
+                <button type="button" class="btn btn-primary" onclick="submit()">提交标注</button>
+            </div>
+        </div>
+
+        <div class="row">
+            {% set label_data = data['label_data'] %}
+            {% for i in range(label_data['label_num']) %}
+                <div class="tag" style="background-color:{{label_data['label_colors'][i]}}">
+                    <a class="button_a" onclick="annotate('{{label_data['sequence_labels'][i]}}')">{{label_data['labels'][i]}}</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="text" id="tag_text"></div>
+        </div>
+
+        <div class="row">
+            <div class="mark_box">
+                <label style="float:left;">请为您的标注打分：</label>
+                <ol class="cleanfloat">
+                    <li>&#9733;</li>
+                    <li>&#9733;</li>
+                    <li>&#9733;</li>
+                    <li>&#9733;</li>
+                    <li>&#9733;</li>
+                </ol>
+            </div>
+            <div style="float:right"><button type="button" class="btn btn-info" onclick="next()">下一条</button></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script type="text/javascript">
+        // Global variables
+        var selected_range = null;
+        // tojson
+        var label_data = null
+        var entity_data = null
+        var label2color = {}
+        var text_id = null
+
+        // 初始化时渲染界面
+        jQuery(function(){
+            render({{ data | tojson }})
+        })
+
+        // 渲染待标注的文本
+        function render(data){
+            label_data = data['label_data']
+            entity_data = data['entity_data']
+            text_id = entity_data['text_id']
+
+            //Get the mapping from label to color
+            for(var i=0; i < label_data['label_num']; i++){
+                label2color[label_data['sequence_labels'][i]] = label_data['label_colors'][i]
+            }
+
+            var text = entity_data['text']
+            var labels = entity_data['labels']
+            var content = ''
+
+            for(var j=0; j < labels.length; j++){
+                if(labels[j] == 'O'){
+                    if(j > 0 && labels[j-1].substring(0,1) == 'I'){
+                        content += '</span>'
+                    }
+                    content += text[j]
+                }
+                else if(labels[j].substring(0,1) == 'I'){
+                    content += text[j]
+                }
+                else if(labels[j].substring(0,1) == 'B'){
+                    var sub_label = labels[j].substring(2)
+                    var color = label2color[sub_label]
+                    content += '<span class="tagged_text" style="background-color:' + color + '">'
+                    content += text[j]
+                }
+                else{
+                    alert('error when processing labels')
+                }
+            }
+
+            jQuery('#tag_text').html(content)
+        }
+
+        // Annotate the text
+        function annotate(label){
+            var color = label2color[label]
+            if(selected_range != null){
+                var node = selected_range.startContainer.parentNode
+                var root_node = document.getElementById("tag_text")
+
+                if(node == root_node){
+                    if(label != 'O'){
+                        selected_string = selected_range.toString()
+                        var block = jQuery('<span class="tagged_text", style="background-color:'+color+'">' + selected_string + '</span>')
+                        selected_range.surroundContents(block[0])
+                    }
+                }
+                else if(label == 'O'){
+                    var new_node = document.createTextNode(node.innerText)
+                    document.getElementById("tag_text").replaceChild(new_node, node)
+                }else{
+                    node.setAttribute('style', 'background-color:' + color)
+                }
+            }
+        }
+
+        // Get the selected content
+        jQuery(function(){
+            jQuery('#tag_text').mouseup(function(e){
+                if (window.getSelection) { //chrome,firefox,opera
+                    var range=window.getSelection().getRangeAt(0);
+                    var select_content = range.toString()
+                    //var container = document.createElement('div')
+                    //container.appendChild(range.cloneContents())
+                    //var html = container.innerHTML
+                    if(select_content.trim() != ""){
+                        selected_range = range
+                    }
+                    else{
+                        selected_range = null
+                    }
+                }
+            })
+        })
+
+        // Calculate labels using the html
+        function infer_labels(){
+            //Get the mapping from label to color
+            var color2label = {}
+            for(var i=0; i < label_data['label_num']; i++){
+                color2label[label_data['label_colors'][i]] = label_data['sequence_labels'][i]
+            }
+
+            var html = document.getElementById("tag_text").innerHTML
+            html = '<span></span>' + html + '<span></span>'
+            var nodes = jQuery(html)
+
+            var res_labels = []
+            for(var i = 1; i < nodes.length-1; i++){
+                if(nodes[i].nodeName == 'SPAN'){
+                    var text = nodes[i].innerText
+                    var color = nodes[i].getAttribute('style').substring(17)
+                    var sub_label = color2label[color]
+                    
+                    res_labels.push('B-' + sub_label)
+                    for(var j = 1; j < text.length; j++){
+                        res_labels.push('I-' + sub_label)
+                    }
+
+                }else if(nodes[i].nodeName == '#text'){
+                    for(var j = 0; j < nodes[i].data.length; j++){
+                        res_labels.push('O')
+                    }
+                }else{
+                    alert('解析标签时发生数据错误，请尝试更换文本')
+                }
+            }
+
+            var whole_text = document.getElementById('tag_text').innerText
+            if(whole_text.length != res_labels.length){
+                alert('解析标签时发生数据错误，请尝试更换文本')
+                return -1;
+            }
+            return res_labels
+        }
+
+        // 打分样式控制
+        jQuery(function () {
+            jQuery("ol li").hover(function(){
+                jQuery(this).addClass('hs');
+                jQuery(this).prevAll().addClass('hs');
+            },function(){
+                jQuery(this).removeClass('hs');
+                jQuery(this).prevAll().removeClass('hs');
+            })
+
+            jQuery("ol li").click(function () {
+                jQuery(this).addClass('cs');
+                jQuery(this).prevAll().addClass('cs');
+                jQuery(this).nextAll().removeClass('cs');
+            })
+        })
+
+        // 计算打分分值
+        function calculate_marks(){
+            var lis = jQuery('ol li')
+            var mark = 0;
+            for (var i = 0; i < lis.length; i++){
+                if (lis[i].className == 'cs'){
+                    mark = mark + 1
+                }
+            }
+            return mark
+        }
+
+        // 提交数据
+        function submit(){
+            var res_labels = infer_labels()
+            var mark = calculate_marks()
+
+            // 判断打分是否为0分
+            var r = confirm("确定将本次标注评为" + mark + "分?")
+
+            if (r==true){
+                jQuery.ajax({
+                    type: 'POST',
+                    url: '/graph/entity_label',
+                    data: {'labels': JSON.stringify(res_labels), 'text_id': text_id, 'mark': mark},
+                    success: function(data){
+                        alert(data)
+                    },
+                    error: function(){
+                        alert('提交失败，请重试')
+                    }
+                })
+            }
+
+        }
+
+        //下一条数据
+        function next(){
+            jQuery.ajax({
+                url: '/graph/next_entity?id=' + text_id,
+                success: function(data){
+                    render(data)
+                },
+                error: function(data){
+                    alert('获取下一条数据失败')
+                }
+            })
+        }
+
+    </script>
+{% endblock %}

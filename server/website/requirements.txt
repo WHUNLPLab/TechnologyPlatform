@@ -1,0 +1,9 @@
+uwsgi
+flask
+py2neo==3.1.2
+flask-bootstrap
+flask-sqlalchemy
+flask-moment
+flask-mail
+flask-script
+flask-migrate

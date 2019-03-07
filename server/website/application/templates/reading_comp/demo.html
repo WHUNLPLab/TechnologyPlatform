@@ -1,0 +1,123 @@
+{% extends "base/side-right.html" %}
+
+{% block head %}
+    {{ super() }}
+
+    <style type="text/css">
+        .row {
+            margin-bottom: 30px;
+        }
+
+        .text_center {
+            text-align: center;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row text_center">
+            <h1>阅读理解</h1>
+        </div>
+
+        <div class="row">
+            <p>
+                基于阅读理解模型和复述生成模型，实现面向开放域的、生成式的智能问答系统。该系统能够对用户的各种问题描述做同义识别并给出问题答案。
+            </p>
+        </div>
+        <div>
+            <div class="input-group-lg">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="name">文档描述</label>
+                        <textarea name="textarea_document" class="form-control" placeholder="请输入文档"
+                                  id="textarea_document"
+                                  rows="7"></textarea>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="row"></div>
+        <div class="row">
+            <div class="input-group input-group-lg">
+                <input type="text" placeholder="请输入你要提问的问题" class="form-control" name="MRCQueryText"
+                       size="40" id="MRCQueryText" title="query "/>
+                <input id="hiddenText2" type="text" style="display:none" onkeypress="searchKeywordKeyboard(event)"/>
+                <span class="input-group-addon btn btn-primary" id="mrc_search" onclick="mrcsearch()">Query</span>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <label>答案描述：</label>
+            <div id="textarea_answer" class="span12 left"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <!-- multi_porpose   -->
+    <script type="text/javascript">
+        function mrcsearch() {
+            {#alert("function")#}
+            jQuery.ajax({
+                url: 'http://ip:port/api',
+                type: 'post',
+                data: {
+                    question: jQuery('#MRCQueryText').val(),
+                    desc: jQuery('#textarea_document').val()
+                },
+                success: function (data) {
+                    console.log(data);
+
+                    jQuery('#textarea_answer').html(data.answer);
+                    console.log(data.answer);
+                    jQuery('#chart').show()
+                    {#chart.setOption({#}
+                    {#    title: {#}
+                    {#        text: 'probability chart'#}
+                    {#    },#}
+                    {#    tooltip: {},#}
+                    {#    legent: {#}
+                    {#        data: ['probability']#}
+                    {#    },#}
+                    {#    xAxis: {#}
+                    {#        data: data.passage_cut#}
+                    {#    },#}
+                    {#    yAxis: {},#}
+                    {#    series: [{#}
+                    {#        name: 'startpoint prob.',#}
+                    {#        type: 'line',#}
+                    {##}
+                    {#        data: data.data_prob[0]#}
+                    {#    }, {#}
+                    {#        name: 'endpoint prob.',#}
+                    {#        type: 'line',#}
+                    {##}
+                    {#        data: data.data_prob[1]#}
+                    {#    }]#}
+                    {##}
+                }
+            })
+        }
+
+        jQuery('#MRCQueryText').keydown(function (e) {
+            if (e.keyCode == 13 && jQuery('input[name="MRCQueryText"]').val().length > 0) {
+                mrcsearch()
+            }
+        });
+
+
+        jQuery(function () {
+            jQuery("#mrc_search").click(function () {
+                mrcsearch();
+            })
+        });
+    </script>
+
+{% endblock %}

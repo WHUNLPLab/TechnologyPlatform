@@ -1,0 +1,1 @@
+docker run -d -p 7000:80 --privileged=true -v /home/lab/TechnologyPlatform/server/website:/var/www/app technoloy_platform

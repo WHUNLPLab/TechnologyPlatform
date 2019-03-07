@@ -1,0 +1,90 @@
+{% extends 'base/side-right.html' %}
+
+{% block head %}
+    {{ super() }}
+
+    <style type="text/css">
+        th{
+            text-align: center;
+            background-color: #F0F0F0;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <h5><a href="/graph/schema">Class(分类列表)</a> | <strong>{{ class_name }}</strong></h5>
+        </div>
+
+        <div class="row">
+            <table class="table table-bordered" id="property_table">
+                <tr>
+                    <th>Property</th>
+                    <th>SubPropertyOf</th>
+                    <th>Domain</th>
+                    <th>Range</th>
+                    <th>Comment</th>
+                    <th>Functional</th>
+                    <th>Symmetric</th>
+                    <th>Vertical</th>
+                    <th>Operations</th>
+                </tr>
+                {% for property in class_properties %}
+                <tr>
+                    <td>{{ property['label'] }}</td>
+                    <td>{{ property['subPropertyOf'] }}</td>
+                    <td>{{ property['domain'] }}</td>
+                    <td>{{ property['rangee'] }}</td>
+                    <td>{{ property['comment'] }}</td>
+                    <td>{{ property['functionalProperty'] }}</td>
+                    <td>{{ property['symmetricProperty'] }}</td>
+                    <td>{{ property['vertical'] }}</td>
+                    <td>
+                        <button type="button" class="btn btn-info btn-sm" onclick="reviseRow()">修改</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow()">删除</button>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="9" class="danger">
+                        <button class="btn btn-primary btn-sm" onclick="addRow()">增加</button>
+                        <button class="btn btn-warning btn-sm">保存</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script>
+        // 增加一行
+        function addRow(){
+            var td = '<td contenteditable="true"></td>';
+            var btn = '<td><button type="button" class="btn btn-info btn-sm"  onclick="reviseRow()">修改</button> ' +
+                '<button type="button" class="btn btn-danger btn-sm"  onclick="deleteRow()">删除</button></td>';
+
+            var line = '<tr>' + td + td + td + btn + '</tr>';
+
+            jQuery('#property_table tr:last').before(line);
+        };
+
+        function deleteRow(){
+            jQuery(this).parent().parent().remove()
+            alert('aaa')
+        };
+
+        function reviseRow(){
+
+        }
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base/side-right.html" %}
+
+{% block head %}
+    {{ super() }}
+
+    <style type="text/css">
+        .row {
+            margin-bottom: 30px;
+        }
+
+        .text_center {
+            text-align: center;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row text_center">
+            <h1>答案生成</h1>
+        </div>
+
+        <div class="row">
+            <p>
+                答案生成能够利用垂直领域的问答语料及外部知识库为用户提问自动生成具有背景信息的描述性答案。该技术可用于智能客服、自动问答、信息检索等领域个性化答案的生成。
+            </p>
+        </div>
+        <div>
+            <div class="input-group-lg">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="name">百科知识</label>
+                        <textarea name="textarea_AGdocument" class="form-control" placeholder="请输入百科知识" id="textarea_AGdocument"
+
+                                  rows="7"></textarea>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="row"></div>
+        <div class="row">
+            <div class="input-group input-group-lg">
+                <input type="text" placeholder="请输入你要提问的问题" class="form-control" name="AGQueryText"
+                       size="40" id="AGQueryText" title="query "/>
+                <input id="hiddenText2" type="text" style="display:none" onkeypress="searchKeywordKeyboard(event)"/>
+                <span class="input-group-addon btn btn-primary" id="AG_search" onclick="AGsearch()">Query</span>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <label>答案生成：</label>
+            <div id="textarea_AGanswer" class="span12 left"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <!-- multi_porpose   -->
+    <script type="text/javascript">
+        function AGsearch() {
+            alert("ag")
+            jQuery.post("http://ip:port/ag", {
+                context: jQuery('#textarea_AGdocument').val(),
+                question: jQuery('#AGQueryText').val()
+            }, function (data) {
+
+                jQuery('#textarea_AGanswer').val(data);
+            })
+        }
+
+        jQuery('#AG_search').keydown(function (e) {
+            alert("haha")
+            if (e.keyCode == 13 && jQuery('input[name="AGQueryText"]').val().length > 0) {
+                AGsearch()
+            }
+        });
+        jQuery(function () {
+            jQuery("#AG_search").click(function () {
+                AGsearch();
+            })
+        });
+
+    </script>
+
+{% endblock %}

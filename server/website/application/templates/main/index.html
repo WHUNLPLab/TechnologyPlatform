@@ -1,0 +1,361 @@
+{% extends "base/layout-nav.html" %}
+
+{% block head %}
+    {{ super() }}
+
+    <link rel="stylesheet" href={{ url_for('static', filename='css/style.css') }}>
+{% endblock %}
+
+{% block content %}
+    <!-- Header -->
+    <header id="head">
+        <div class="container">
+            <div class="heading-text">
+                <h1 class="animated flipInY delay1">武汉大学语言与信息研究中心</h1>
+                <p>LANGUAGE AND INFORMATION RESEARCH CENTER</p>
+            </div>
+
+            <div class="fluid_container">
+                <div class="camera_wrap camera_emboss pattern_1" id="camera_wrap_4">
+                    <div data-thumb="/static/images/slides/thumbs/img1.jpg" data-src="/static/images/slides/img1.jpg">
+                        <h2>We develop.</h2>
+                    </div>
+                    <div data-thumb="/static/images/slides/thumbs/img2.jpg" data-src="/static/images/slides/img2.jpg">
+                    </div>
+                    <div data-thumb="/static/images/slides/thumbs/img3.jpg" data-src="/static/images/slides/img3.jpg">
+                    </div>
+                </div><!-- #camera_wrap_3 -->
+            </div><!-- .fluid_container -->
+        </div>
+    </header>
+    <!-- /Header -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="grey-box-icon">
+                    <div class="icon-box-top grey-box-icon-pos">
+                        <img src="/static/images/1.png" alt=""/>
+                    </div><!--icon box top -->
+                    <h4>多轮对话</h4>
+                    <p>设计实现垂直领域的多轮对话系统，包括：（1）将非结构化自然语言命令转化为结构化的语义表示；（2）维护系统与用户交互的上下文信息。系统最终通过基于自然语言的交互，完成用户的命令</p>
+                    <p><a href="#"><em>更多</em></a></p>
+                </div><!--grey box -->
+            </div><!--/span3-->
+            <div class="col-md-3">
+                <div class="grey-box-icon">
+                    <div class="icon-box-top grey-box-icon-pos">
+                        <img src="/static/images/2.png" alt=""/>
+                    </div><!--icon box top -->
+                    <h4>多意图</h4>
+                    <p>多意图识别计划在语音识别后的无标点文本中自动加入标点信息，划分句子边界，使得处理后的文本便于阅读理解和意图识别。该技术能提高许多下游任务的效率，如语义分析、机器翻译等。</p>
+                    <p><a href="#"><em>更多</em></a></p>
+                </div><!--grey box -->
+            </div><!--/span3-->
+            <div class="col-md-3">
+                <div class="grey-box-icon">
+                    <div class="icon-box-top grey-box-icon-pos">
+                        <img src="/static/images/3.png" alt=""/>
+                    </div><!--icon box top -->
+                    <h4>知识图谱</h4>
+                    <p>知识图谱面向中西方古典艺术，主要包括美术、音乐、戏曲、名著等。计划基于结构化、半结构化和非结构化文本，完成数据爬取解析、信息抽取以及知识融合建库等操作</p>
+                    <p><a href="#"><em>更多</em></a></p>
+                </div><!--grey box -->
+            </div><!--/span3-->
+            <div class="col-md-3">
+                <div class="grey-box-icon">
+                    <div class="icon-box-top grey-box-icon-pos">
+                        <img src="/static/images/4.png" alt=""/>
+                    </div><!--icon box top -->
+                    <h4>情感分析</h4>
+                    <p>对文本进行细粒度的情感分析，从而识别出文本所表达的情感及情感评价的对象或属性。该技术能够辅助消费者对产品进行选择，同时对企业收集消费者对产品的建议也有很大的帮助。</p>
+                    <p><a href="#"><em>更多</em></a></p>
+                </div><!--grey box -->
+            </div><!--/span3-->
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="grey-box-icon">
+                    <div class="icon-box-top grey-box-icon-pos">
+                        <img src="/static/images/1.png" alt=""/>
+                    </div><!--icon box top -->
+                    <h4>短文本关键词抽取</h4>
+                    <p>利用词汇的统计信息和主题特征等抽取短文本关键词并根据重要性进行排序。该技术主要应用于短文本聚类、自动问答、自动文摘等领域。</p>
+                    <p><a href="#"><em>更多</em></a></p>
+                </div><!--grey box -->
+            </div><!--/span3-->
+            <div class="col-md-3">
+                <div class="grey-box-icon">
+                    <div class="icon-box-top grey-box-icon-pos">
+                        <img src="/static/images/2.png" alt=""/>
+                    </div><!--icon box top -->
+                    <h4>答案生成</h4>
+                    <p>答案生成能够利用领域问答语料及外部知识库为用户提问自动生成具有背景信息的描述性答案。该技术可用于智能客服、自动问答、信息检索等领域个性化答案的生成。</p>
+                    <p><a href="#"><em>更多</em></a></p>
+                </div><!--grey box -->
+            </div><!--/span3-->
+            <div class="col-md-3">
+                <div class="grey-box-icon">
+                    <div class="icon-box-top grey-box-icon-pos">
+                        <img src="/static/images/3.png" alt=""/>
+                    </div><!--icon box top -->
+                    <h4>阅读理解</h4>
+                    <p>基于阅读理解模型和复述生成模型，实现面向开放域的、生成式的智能问答系统。该系统能够对用户的各种问题描述做同义识别并给出问题答案。</p>
+                    <p><a href="#"><em>更多</em></a></p>
+                </div><!--grey box -->
+            </div><!--/span3-->
+            <div class="col-md-3">
+                <div class="grey-box-icon">
+                    <div class="icon-box-top grey-box-icon-pos">
+                        <img src="/static/images/4.png" alt=""/>
+                    </div><!--icon box top -->
+                    <h4>歌曲文案</h4>
+                    <p>通过理解歌曲语义和用户情感，自动在播放歌曲前后引入相关的自然语言描述文本。该技术通过与用户聊音乐的方式，加强与用户之间的沟通，提高用户听歌体验。</p>
+                    <p><a href="#"><em>更多</em></a></p>
+                </div><!--grey box -->
+            </div><!--/span3-->
+        </div>
+    </div>
+    <!--
+    <section class="news-box top-margin">
+        <div class="container">
+            <h2><span>关于我们</span></h2>
+            <div class="row">
+
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="newsBox">
+                        <div class="thumbnail">
+                            <figure><img src="/static/images/news2.jpg" alt=""></figure>
+                            <div class="caption maxheight2">
+                                <div class="box_inner">
+                                    <div class="box">
+                                        <p class="title"><h5>信息获取</h5></p>
+                                        <p>通过爬虫爬取百度百科、维基百科等半结构化数据，新闻等非结构化文本作为初始语料.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="newsBox">
+                        <div class="thumbnail">
+                            <figure><img src="/static/images/news3.jpg" alt=""></figure>
+                            <div class="caption maxheight2">
+                                <div class="box_inner">
+                                    <div class="box">
+                                        <p class="title"><h5>信息抽取 </h5></p>
+                                        <p>解析半结构化、非结构化数据，抽取其中的艺术类实体及其关系，利用Neo4j数据库组织图谱.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <div class="newsBox">
+                        <div class="thumbnail">
+                            <figure><img src="/static/images/news4.jpg" alt=""></figure>
+                            <div class="caption maxheight2">
+                                <div class="box_inner">
+                                    <div class="box">
+                                        <p class="title"><h5>知识更新</h5></p>
+                                        <p>定期爬取新语料，在已有图谱中更新并扩展旧的实体属性与实体间关系.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    -->
+
+    <section class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title-box clearfix ">
+                    <h2 class="title-box_primary">关于我们</h2>
+                </div>
+                <p>
+                    <span>项目组成员来自武汉大学计算机学院，长期专注于自然语言处理、信息检索、网络传播等方面的研究.</span>
+                    近五年来，主持了相关领域的中国国家自然科学基金项目3项、国家和省部市级科技计划项目共计12项.
+                </p>
+                <p>
+                    近五年发表与本研究紧密相关的SCI/EI/ISTP/核心论文共计101篇，其中SCI25篇、CCF和通信领域C类以上会议论文19篇，
+                    参编著作2部；授权国家发明专利和软件著作权7项；获得湖北省科技进步一等奖和自然科学二等奖各1项、国际会议最佳论文奖1项.
+                </p>
+                <a href="#" title="read more" class="btn-inline " target="_self">更多</a>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block footer %}
+    <footer id="footer">
+
+    <div class="container">
+        <div class="row">
+            <div class="footerbottom">
+                <div class="col-md-3 col-sm-6">
+                    <div class="footerwidget">
+                        <h4>
+                            友情链接
+                        </h4>
+                        <div class="menu-course">
+                            <ul class="menu">
+                                <li>
+                                    <a href="http://sc.whu.edu.cn">实验室主页</a>
+                                </li>
+                                <li>
+                                    <a href="http://wiki.pmnlp.top">实验室Wiki</a>
+                                </li>
+                                <li>
+                                    <a href="http://cs.whu.edu.cn">计算机学院</a>
+                                </li>
+                                <li>
+                                    <a href="http://www.whu.edu.cn">武汉大学</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="footerwidget">
+                        <h4>
+                            合作产商
+                        </h4>
+                        <div class="menu-course">
+                            <ul class="menu">
+                                <li><a href="https://www.mi.com/">
+                                    小米</a>
+                                </li>
+                                <li><a href="#">
+                                    Business Plans
+                                </a>
+                                </li>
+                                <li><a href="#">
+                                    Free Trial
+                                </a>
+                                </li>
+                                <li><a href="#">
+                                    Academic
+                                </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="footerwidget">
+                        <h4>
+                            合作产品
+                        </h4>
+                        <div class="menu-course">
+                            <ul class="menu">
+                                <li><a href="#">
+                                    All Courses
+                                </a>
+                                </li>
+                                <li><a href="#">
+                                    All Instructors
+                                </a>
+                                </li>
+                                <li><a href="#">
+                                    All Members
+                                </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        All Groups
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="footerwidget">
+                        <h4>联系方式</h4>
+                        <p>请优先考虑发送邮件到指定邮箱</p>
+                        <div class="contact-info">
+                            <i class="fa fa-map-marker"></i> 湖北省武汉市八一路武汉大学<br>
+                            <i class="fa fa-phone"></i>027-68775361 <br>
+                            <i class="fa fa-envelope-o"></i> whunlplab@whu.edu.cn
+                        </div>
+                    </div><!-- end widget -->
+                </div>
+            </div>
+        </div>
+        <div class="social text-center">
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-dribbble"></i></a>
+            <a href="#"><i class="fa fa-flickr"></i></a>
+            <a href="#"><i class="fa fa-github"></i></a>
+        </div>
+
+        <div class="clear"></div>
+        <!--CLEAR FLOATS-->
+    </div>
+    <div class="footer2">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-7 panel">
+                    <div class="panel-body">
+                        <p class="simplenav">
+                            <a href="index.html">多意图</a> |
+                            <a href="about.html">多轮对话</a> |
+                            <a href="courses.html">情感分析</a> |
+                            <a href="price.html">关键词提取</a> |
+                            <a href="contact.html">答案生成</a> |
+                            <a href="courses.html">知识图谱</a> |
+                            <a href="price.html">阅读理解</a> |
+                            <a href="contact.html">歌曲文案</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-5 panel">
+                    <div class="panel-body">
+                        <p class="text-right">
+                            Copyright &copy; 2018 Wuhan University NLP laboratory <a
+                                href="http://www.cssmoban.com/" target="_blank" title="模板之家">武汉大学语言与信息研究中心</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /row of panels -->
+        </div>
+    </div>
+</footer>
+{% endblock %}
+
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+    jQuery(function () {
+
+        jQuery('#camera_wrap_4').camera({
+            transPeriod: 500,
+            time: 3000,
+            height: '500',
+            loader: 'false',
+            pagination: true,
+            thumbnails: false,
+            hover: false,
+            playPause: false,
+            navigation: false,
+            opacityOnGrid: false,
+            imagePath: '/static/images/'
+        });
+
+    });
+
+</script>
+{% endblock %}

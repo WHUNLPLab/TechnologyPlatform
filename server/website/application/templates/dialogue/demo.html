@@ -1,0 +1,32 @@
+{% extends "base/side-right.html" %}
+
+
+{% block head %}
+    {{ super() }}
+
+    <style type="text/css">
+        .row{
+            margin-bottom: 30px;
+        }
+        .text_center{
+            text-align: center;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row text_center">
+            <h1>多轮对话</h1>
+        </div>
+
+        <div class="row">
+            <p>
+                设计实现垂直领域的多轮对话系统，包括：（1）将非结构化自然语言命令转化为结构化的语义表示；（2）维护系统与用户交互的上下文信息。系统最终通过基于自然语言的交互，完成用户的命令。
+            </p>
+        </div>
+
+
+    </div>
+{% endblock %}

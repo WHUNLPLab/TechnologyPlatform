@@ -1,0 +1,83 @@
+{% extends "base/side-right.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <h1>标注指南</h1>
+    </div>
+    <div class="row">
+        此指南用于指导<b>非结构化实体标注</b>与<b>非结构化关系标注</b>的操作流程。在进行数据标注前，请详细阅读此指南。在标注过程中如遇到任何技术问题，可翻看此指南或者联系相关技术人员。
+    </div>
+    <div class="row">
+        <h2>非结构化实体标注</h2>
+    </div>
+    <div class="row">
+        下图为非结构化实体标注界面,其中，中部五彩按钮表示的是实体类型（图中为Person、Loc、Org等），按钮下方文本表示需要标注的文本。右上角为提交标注按钮，右下角为切换文本按钮，左下角是为自己的标注打分。
+        <img style="width: 100%" src="/static/images/docs/entity_label_1.png" />
+    </div>
+    <div class="row">
+        <h3>实体类型含义</h3>
+    </div>
+    <div class="row">
+        <ul>
+            <li>Person （PER）：人物，如艺术家、政治家等人名</li>
+            <li>Loc （LOC）：地理位置，如国家、城市、地点</li>
+            <li>Org （ORG）：组织，如中国美术馆、中国政府、机构等</li>
+            <li>Work （WOR）：艺术作品，如蒙娜丽莎的微笑（不含书名号）等</li>
+            <li>Genre （GEN）：艺术流派，如印象派、抽象派等</li>
+            <li>Other （O）：所有不属于以上类型的文本类型</li>
+        </ul>
+    </div>
+    <div class="row">
+        <h3>标注流程</h3>
+    </div>
+    <div class="row">
+        <label>典型的标注流程如下：</label>
+        <ul>
+            <li>进入标注页面，查看文本。若无法判断实体类型，则直接切换下一条文本。若基本能判断，则进行下一步</li>
+            <li>鼠标选中连续的需要标注的文本块，点击对应的实体类型按钮进行标注。重复此过程直到所有已知实体都进行了标注</li>
+            <li>为自己的标注进行打分。系统将根据打分计算数据可靠程度</li>
+            <li>若要修改标注，请用鼠标选中标注项（此时操作最小单位是一个标注项)，先标注为Other类型，再进行其他标注</li>
+            <li>文本标注结束后，点击提交标注按钮，查看后台返回状态</li>
+            <li>获取下一条标注数据，重复上述过程</li>
+        </ul>
+        <label>一条标注好的数据如下图所示：</label>
+        <img style="width: 100%;" src='/static/images/docs/entity_label_2.png' />
+    </div>
+
+    <div class="row">
+        <h2>非结构化关系标注</h2>
+    </div>
+    <div class="row">
+        目前阶段，系统会自动从实体标注后的文本中提取实体对进行关系标注。关系标注的单位是一个句子（为了将数据集整理为NYT数据集格式）。关系标注的界面如下图所示,布局基本与实体标注一致。不同的是文本中自动标注了头尾实体，并在下方表格中给出了头尾实体类型。
+        <img style="width: 100%" src="/static/images/docs/relation_label_1.png" />
+    </div>
+    <div class="row">
+        <h3>关系类型含义</h3>
+    </div>
+    <div class="row">
+        目前正在整理中……
+    </div>
+    <div class="row">
+        <h3>标注流程</h3>
+    </div>
+    <div class="row">
+        <label>典型的标注流程如下：</label>
+        <ul>
+            <li>进入标注界面，观察文本。若能够判断关系类型，进入下一步。若不能，切换下一条文本</li>
+            <li>查看当前关系，若需要修改关系类型，选中对应关系类型</li>
+            <li>为标注结果进行打分，并提交标注</li>
+            <li>切换下一条数据，重复上述过程</li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <h2>注意事项</h2>
+    </div>
+    <div class="row">
+        如果遇到问题，请回到顶部继续翻看。或者联系<a>@胡伟龙</a>
+    </div>
+</div>
+
+{% endblock %}

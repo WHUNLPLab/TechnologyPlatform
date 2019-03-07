@@ -1,0 +1,67 @@
+{% extends "base/side-right.html" %}
+
+{% block head %}
+    {{ super() }}
+
+    <style type="text/css">
+        .row{
+            margin-bottom: 30px;
+        }
+        .text_center{
+            text-align: center;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row text_center">
+            <h1>多意图识别</h1>
+        </div>
+
+        <div class="row">
+            <p>
+                多意图识别计划在语音识别后的无标点文本中自动加入标点信息，划分句子边界，使得处理后的文本便于阅读理解和意图识别。该技术能提高许多下游任务的效率，如语义分析、机器翻译等。
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="input-group input-group-lg">
+                <input type="text" placeholder="输入无标点符号的待切分句子" class="form-control" name="multiPurposeText" size="40" id="mp-search" title="query "/>
+                <input id="hiddenText2" type="text" style="display:none" onkeypress="searchKeywordKeyboard(event)"/>
+                <span class="input-group-addon btn btn-primary" id="mp-query" onclick="mpsearch()">Query</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <label>多意图识别结果：</label>
+            <div id="mutilPurposeResult" class="span12 left"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <!-- multi_porpose   -->
+    <script type="text/javascript">
+        function mpsearch() {
+            jQuery.post("http://ip:port/cut/", {echoText: jQuery('input[name="multiPurposeText"]').val()}, function (data) {
+                jQuery("#mutilPurposeResult").html(data);
+            })
+        }
+
+        jQuery('#mp-search').keydown(function (e) {
+            if (e.keyCode == 13 && jQuery('input[name="multiPurposeText"]').val().length > 0) {
+                mpsearch();
+            }
+        });
+        jQuery(function () {
+            jQuery("#mp_query").click(function () {
+                mpsearch()
+            })
+        })
+    </script>
+
+{% endblock %}

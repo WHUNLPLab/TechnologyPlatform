@@ -1,0 +1,46 @@
+{% extends "base/layout.html" %}
+
+{% block navbar %}
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" href="/">技术演示平台</a>
+
+
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right mainNav">
+                <li><a href="/intention">多意图</a></li>
+                <li><a href="/dialogue">多轮对话</a></li>
+                <li><a href="/sentiment">情感分析</a></li>
+                <li><a href="/word_extraction">关键词提取</a></li>
+                <li><a href="/ans_gen">答案生成</a></li>
+                <li><a href="/graph">知识图谱</a></li>
+                <!--
+                <li><a href="/document">文档</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">标注 <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/tagger/lemma">半结构化<b>词条标注</b></a></li>
+                        <li><a href="/tagger/entity">非结构化<b>实体标注</b></a></li>
+                        <li><a href="/tagger/relation">非结构化<b>关系标注</b></a></li>
+                    </ul>
+                </li>
+                -->
+                <li><a href="/reading_comp">阅读理解</a> </li>
+                <li><a href="/song_copy">歌曲文案</a> </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base/side-right.html" %}
+
+{% block head %}
+    {{ super() }}
+
+    <style type="text/css">
+        .row {
+            margin-bottom: 30px;
+        }
+
+        .text_center {
+            text-align: center;
+        }
+    </style>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row text_center">
+            <h1>短文本关键词抽取</h1>
+        </div>
+
+        <div class="row">
+            <p>
+                利用词汇的统计信息和主题特征等抽取短文本关键词并根据重要性进行排序，主要应用于短文本聚类、自动问答、自动文摘等领域。
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="input-group input-group-lg">
+                <input type="text" placeholder="请输入待提取关键词的短文本" class="form-control" name="queryText" size="40"
+                       id="kwe-search" title="query "/>
+                <input id="hiddenText" type="text" style="display:none" onkeypress="searchKeywordKeyboard(event)"/>
+                <span class="input-group-addon btn btn-primary" id="kwe_search" onclick="kwesearch()">Query</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <label>结果：</label>
+            <div id="echoResultWord" class="span12 left"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <!-- multi_porpose   -->
+    <script type="text/javascript">
+        function kwesearch() {
+            if (jQuery('input[name="queryText"]').val().length > 0) {
+                jQuery.post("http://ip:port/kweCal", {queryText: jQuery('input[name="queryText"]').val()}, function (data) {
+                    var resultTest = eval(data);
+                    jQuery("#echoResultWord").html("");
+                    jQuery("#echoResultTopic").html("");
+                    jQuery("#echoResultWord").html(JSON.stringify(resultTest[0]))
+                })
+            }
+        }
+
+        jQuery('#kwe-search').keydown(function (e) {
+            if (e.keyCode == 13 && jQuery('input[name="queryText"]').val().length > 0) {
+                kwesearch()
+            }
+        });
+        jQuery(function () {
+            jQuery("#kwe_search").click(function () {
+                kwesearch()
+            })
+        })
+    </script>
+
+{% endblock %}

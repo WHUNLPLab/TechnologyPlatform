@@ -1,0 +1,67 @@
+{% extends "base/layout-nav.html" %}
+
+{% block content %}
+
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+
+                {% block side %}
+                {% endblock %}
+
+                <footer class="sidebar-footer">
+                    Copyright <span class="fontArial">©</span>
+                    2018-2019 <br>
+                    武汉大学语言与信息研究中心
+                </footer>
+
+            </ul>
+        </div>
+        <div class="col-xs-12 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+            <div>
+			    <iframe name="content-iframe"
+                    id="content-iframe" src="/" width="100%" height="600px" scrolling="auto" 
+                    sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-modals"
+				    frameborder="0" style="margin: 0px" onload="changeFrameHeight()">
+                </iframe>
+		    </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+    {{ super() }}
+
+    <script type="text/javascript">
+        function changeFrameHeight() {
+            var ifm = document.getElementById("content-iframe");
+            ifm.height = document.documentElement.clientHeight - 20;
+        }
+
+        window.onresize=function () {
+            changeFrameHeight()
+        }
+
+        function changeSrc(newsrc, index) {
+            // 修改class
+            lis = jQuery("ul.nav.nav-sidebar li")
+            for(var i=1; i<=lis.length; i++){
+                jQuery('#menu'+i).attr("class", "");
+            }
+            jQuery("#menu"+index).attr("class", "active")
+
+            jQuery('#content-iframe').attr('src', newsrc);
+        }
+
+        jQuery(document).ready(function () {
+            changeFrameHeight();
+        })
+    </script>
+
+{% endblock %}

@@ -1,0 +1,253 @@
+{% extends "base/side-right.html" %}
+
+{% block head %}
+    {{ super() }}
+
+    <style type="text/css">
+    .row{
+        margin-top: 25px;
+    }
+    .tail{
+        padding: 0px;
+        color: #FFFFFF;
+        border-radius: 5px;
+        background-color: #009688;
+        font-family: "Microsoft YaHei UI";
+    }
+    .head{
+        padding: 0px;
+        color: #FFFFFF;
+        border-radius: 5px;
+        background-color: #209cee;
+        font-family: "Microsoft YaHei UI";
+    }
+    .sentence{
+        font-size: 20px;
+        background-color: #FFFFFF;
+        padding: 10px;
+        border-radius: 4px;
+        font-family: "Microsoft YaHei UI";
+        line-height: 35px;
+        width: 100%;
+        box-shadow: 0 0 1px #000;
+    }
+    .table-key{
+        color: #000;
+        font-weight: bold;
+    }
+    .tips{
+        padding-top: 10px;
+        margin-left: 30px;
+    }
+    .current_label{
+        color: #9933ff;
+        display: inline;
+        font-size: 22px;
+    }
+    .progress_info{
+            font-family: 'Microsoft YaHei UI';
+            margin-left: 10px;
+            font-weight: bold;
+    }
+    .cleanfloat::after{
+            display: inline-block; 
+            clear: both; 
+            content:""; 
+            visibility: hidden; 
+            height: 0px;
+    }/*清浮动*/
+    ol li{
+        list-style: none;
+        float: left;
+        font-size: 25px;
+        margin-right: 5px;
+        color: #ccc;
+        cursor: pointer;
+    }
+    .hs, .cs{
+        color: #f00;
+    }
+    .mark_box{
+        display: flex;
+        float: left;
+        align-items: center;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <h1 style="display: inline">关系标注</h1>
+            <span class="head">头实体</span>
+            <span class="tail">尾实体</span>
+        </div>
+
+        <div class="row">
+            <progress value="7" max="10"></progress><span class="progress_info">7/10</span>
+            <span class="tips"><b>使用说明：</b>根据上下文信息与头尾实体类型标记实体之间的关系。更多信息请参考<a href="/graph/document">使用说明</a>。</span>
+            <div style="float:right">
+                <button type="button" class="btn btn-primary" onclick="submit()">提交标注</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <p class="sentence" id="sentence"></p>
+        </div>
+
+        <div class="row">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <td class="table-key">头实体:</td>
+                    <td>{{ data['relation_data']['head'] }}</td>
+                    <td class="table-key">尾实体:</td>
+                    <td>{{ data['relation_data']['tail'] }}</td>
+                </tr>
+                <tr>
+                    <td class="table-key">头实体类型:</td>
+                    <td>{{ data['relation_data']['head_type'] }}</td>
+                    <td class="table-key">尾实体类型:</td>
+                    <td>{{ data['relation_data']['tail_type'] }}</td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+
+        <div class="row">
+            <label>当前关系：</label>
+            <h3 class="current_label">
+                {{ data['relation_data']['relation_type'] }}
+            </h3>
+            <span class="tips">如果同意当前关系，请直接提交标注。若要更改关系类型，请在下方选定<b>一种关系</b>后提交标注</span>
+        </div>
+
+        <div class="row">
+                {% for col in data['relation_types'] %}
+                    <div class="col-md-3">
+                        {% for relation in col %}
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="relation_radio" value="{{ relation['relation_id']}}" checked> {{ relation['relation_desc'] }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="mark_box">
+                <label style="float:left;">请为您的标注打分：</label>
+                <ol class="cleanfloat">
+                    <li>&#9733;</li>
+                    <li>&#9733;</li>
+                    <li>&#9733;</li>
+                    <li>&#9733;</li>
+                    <li>&#9733;</li>
+                </ol>
+            </div>
+            <div style="float:right"><button type="button" class="btn btn-info" onclick="next()">下一条</button></div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script type="text/javascript">
+        var sentence_id = null
+
+        // 获取选中的关系类型，也就是relation_id
+        function get_radio_value(){
+            var radios = document.getElementsByName('relation_radio')
+            for (var i = 0; i < radios.length; i++){
+                if (radios[i].checked){
+                    return radios[i].value
+                }
+            }
+        }
+
+        // 提交数据
+        function submit(){
+            var relation_id = get_radio_value()
+            var mark = calculate_marks()
+
+            // 判断打分是否为0分
+            var r = confirm("确定将本次标注评为" + mark + "分?")
+            if (r == true){
+                jQuery.ajax({
+                    url: '/graph/relation_label?relation_id=' + relation_id + '&sentence_id=' + sentence_id + '&mark=' + mark,
+                    success: function(data){
+                        alert(data)
+                    },
+                    error: function(data){
+                        alert('提交失败！')
+                    }
+                })
+            }
+        }
+
+        //下一条数据
+        function next(){
+            jQuery.ajax({
+                url: '/graph/next_relation?id=' + sentence_id,
+                success: function(data){
+                    render(data)
+                },
+                error: function(data){
+                    alert('获取下一条数据失败')
+                }
+            })
+        }
+        
+        // 星级打分样式变化
+        jQuery(function () {
+            jQuery("ol li").hover(function(){
+                jQuery(this).addClass('hs');
+                jQuery(this).prevAll().addClass('hs');
+            },function(){
+                jQuery(this).removeClass('hs');
+                jQuery(this).prevAll().removeClass('hs');
+            })
+
+            jQuery("ol li").click(function () {
+                jQuery(this).addClass('cs');
+                jQuery(this).prevAll().addClass('cs');
+                jQuery(this).nextAll().removeClass('cs');
+            })
+        })
+
+        // 计算打分分值
+        function calculate_marks(){
+            var lis = jQuery('ol li')
+            var mark = 0;
+            for (var i = 0; i < lis.length; i++){
+                if (lis[i].className == 'cs'){
+                    mark = mark + 1
+                }
+            }
+            return mark
+        }
+
+        // 渲染标注语句
+        function render(data){
+            var relation_data = data['relation_data']
+            var sentence = relation_data['sentence']
+            sentence_id = relation_data['sentence_id']
+
+            sentence = sentence.replace('<head>', '<span class="head">')
+            sentence = sentence.replace('</head>', '</span>')
+            sentence = sentence.replace('<tail>', '<span class="tail">')
+            sentence = sentence.replace('</tail>', '</span>')
+
+            jQuery('#sentence').html(sentence)
+        }
+
+        jQuery(function(){
+            render({{ data | tojson }})
+        })
+
+    </script>
+
+{% endblock%}

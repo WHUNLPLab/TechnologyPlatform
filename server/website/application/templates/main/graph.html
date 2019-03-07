@@ -1,0 +1,23 @@
+{% extends "base/side-left.html" %}
+
+{% block side %}
+    <!--左侧url列表-->
+    <li class="active" id="menu1"><a href="#" onclick="changeSrc('/graph/schema', 1)">本体设计</a></li>
+    <li class="" id="menu2"><a href="#" onclick="changeSrc('/graph/search', 2)">图谱搜索</a></li>
+    <li class="" id="menu3"><a href="#" onclick="changeSrc('/graph/document', 3)">图谱文档</a></li>
+    <li class="" id="menu4"><a href="#" onclick="changeSrc('/graph/contributor', 4)">开发人员</a></li>
+    <li class="" id="menu5"><a href="#" onclick="changeSrc('/graph/entity', 5)">实体标注</a></li>
+    <li class="" id="menu6"><a href="#" onclick="changeSrc('/graph/relation', 6)">关系标注</a></li>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script type="text/javascript">
+        // 初始加载的url
+        jQuery(document).ready(function () {
+            changeSrc('/graph/schema', 1)
+        })
+    </script>
+
+{% endblock %}
